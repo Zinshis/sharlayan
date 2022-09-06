@@ -84,6 +84,10 @@ namespace Sharlayan.Utilities {
                 entry.ActionStatusID = source[this._memoryHandler.Structures.ActorItem.ActionStatus];
                 entry.ActionStatus = (Actor.ActionStatus) entry.ActionStatusID;
 
+                // CUSTOM
+                this._memoryHandler.Structures.ActorItem.IsFlying = 1508;
+                entry.IsFlying = SharlayanBitConverter.TryToBoolean(source, this._memoryHandler.Structures.ActorItem.IsFlying);
+
                 // 0x17D - 0 = Green name, 4 = non-agro (yellow name)
                 entry.IsGM = SharlayanBitConverter.TryToBoolean(source, this._memoryHandler.Structures.ActorItem.IsGM); // ?
                 entry.IconID = source[this._memoryHandler.Structures.ActorItem.Icon];
@@ -140,16 +144,22 @@ namespace Sharlayan.Utilities {
                 switch (entry.Type) {
                     case Actor.Type.PC:
                         limit = 30;
+                        defaultStatusEffectOffset = defaultStatusEffectOffset + 16;
                         break;
                 }
 
                 int statusSize = this._memoryHandler.Structures.StatusItem.SourceSize;
+                statusSize = 16;
 
                 byte[] statusesMap = this._memoryHandler.BufferPool.Rent(statusSize * limit);
                 byte[] statusMap = this._memoryHandler.BufferPool.Rent(statusSize);
 
                 try {
+                    var test = string.Join(Environment.NewLine, source);
                     Buffer.BlockCopy(source, defaultStatusEffectOffset, statusesMap, 0, limit * statusSize);
+
+                    var sourceArray = string.Join(";", source.Select(x => x.ToString().PadLeft(3, '0')));
+                    var statusesMapArray = string.Join(";", statusesMap.Select(x => x.ToString().PadLeft(3, '0')));
 
                     for (int i = 0; i < limit; i++) {
                         bool isNewStatus = false;

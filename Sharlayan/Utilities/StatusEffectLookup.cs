@@ -10,6 +10,7 @@
 
 namespace Sharlayan.Utilities {
     using System.Collections.Concurrent;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Sharlayan.Models;
@@ -45,6 +46,7 @@ namespace Sharlayan.Utilities {
 
             _loading = true;
             await APIHelper.GetStatusEffects(_statusEffects, configuration);
+            var keys = _statusEffects.AsQueryable().Where(x => x.Value.Name.English == "Mounted");
             _loading = false;
         }
     }

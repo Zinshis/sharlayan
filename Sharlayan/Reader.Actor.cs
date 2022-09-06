@@ -148,6 +148,9 @@ namespace Sharlayan {
                         bool isFirstEntry = kvp.Value.ToInt64() == firstAddress.ToInt64();
 
                         ActorItem entry = this._actorItemResolver.ResolveActorFromBytes(sourceMap, isFirstEntry, existing);
+                        byte[] sourceMapCopy = this._memoryHandler.BufferPool.Rent(sourceSize);
+                        sourceMap.CopyTo(sourceMapCopy, 0);
+                        entry.SourceMap = sourceMapCopy;
 
                         if (entry != null && entry.IsValid) {
                             if (this._expiringActors.ContainsKey(ID)) {

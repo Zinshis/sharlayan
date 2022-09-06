@@ -74,6 +74,8 @@ namespace Sharlayan.Models.Structures {
 
         public int IsCasting2 { get; set; }
 
+        public int IsFlying { get; set; }
+
         public int IsGM { get; set; }
 
         public int Job { get; set; }

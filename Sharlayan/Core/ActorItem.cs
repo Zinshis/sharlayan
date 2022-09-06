@@ -86,6 +86,8 @@ namespace Sharlayan.Core {
 
         public bool IsCasting => (this.CombatFlags & (1 << 7)) != 0;
 
+        public bool IsFlying { get; set; }
+
         public bool IsGM { get; set; }
 
         public uint MapID { get; set; }
@@ -127,6 +129,8 @@ namespace Sharlayan.Core {
         public byte TypeID { get; set; }
 
         public bool WeaponUnsheathed => (this.CombatFlags & (1 << 3)) != 0;
+
+        public byte[] SourceMap { get; set; }
 
         public ActorItem Clone() {
             ActorItem cloned = (ActorItem) this.MemberwiseClone();
